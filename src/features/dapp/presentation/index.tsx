@@ -36,7 +36,6 @@ export const DappList = () => {
 
     if (isLoading) return <div>Loading...</div>
     if (!data) return <div>Missing post!</div>
-
     return (
         <div>
             {data.response.map((app:Dapp) => <Card key={app.dappId} app={app} />)}

@@ -11,7 +11,7 @@ const AppStrings = {
     social: 'Social',
     readMore: 'Read More',
     readLess: 'Read Less',
-    featuredDapps: 'Featured dApps',
+    featuredDapps: 'dApps Powered by Account Abstraction',
     reviewsTitle: 'Ratings & Reviews',
     ratings: 'Ratings'
 }

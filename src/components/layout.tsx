@@ -1,4 +1,4 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+// import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { default as NXTImage } from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,9 +12,17 @@ import { AppStrings } from "../pages/constants";
 import { FeaturedCard, SliderButton } from "./card";
 import { Button, Card } from "./index";
 import { Row } from "./layout/flex";
+import aa from "../data/aa.json";
+import dynamic from "next/dynamic";
 
 
-function NavBar(props) {
+function NavBar(props) { 
+    const DynamicConnect = dynamic(
+        () => import("./connect").then((res) => res.default),
+        {
+          ssr: false,
+        }
+      );
     const app = useSelector(getApp);
 
     const dispatch = useDispatch();
@@ -39,7 +47,7 @@ function NavBar(props) {
 
                 </NavItem>
             </div>
-            <ConnectButton chainStatus="none" showBalance={false} />
+            <DynamicConnect />
         </Row>
     )
 }
@@ -345,6 +353,8 @@ export default function Layout(props) {
         return output
     }
 
+    console.log({ aa: aa })
+
     return (
         <>
             <div {...props}>
@@ -380,8 +390,8 @@ export default function Layout(props) {
                                 </div>
                             </Row>
                             <Slider ref={slider} {...settings}>
-                                {data ? data.map((dapp) =>
-                                    <Link key={app.dappId} href={`/dapp?id=${dapp.dappId}`} draggable={false} onClick={(e) => dragging && e.preventDefault()}><FeaturedCard app={dapp} /></Link>)
+                                {aa ? aa.map((dapp) =>
+                                    <Link key={app.dappId} href={`/aa?id=${dapp.dappId}`} draggable={false} onClick={(e) => dragging && e.preventDefault()}><FeaturedCard app={dapp} /></Link>)
                                     : buildLoadingCard(5)}
                             </Slider>
                         </div>

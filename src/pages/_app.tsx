@@ -14,12 +14,39 @@ import { SessionProvider } from 'next-auth/react';
 import { darkTheme, RainbowKitProvider, } from '@rainbow-me/rainbowkit';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "@biconomy/web3-auth/dist/src/style.css"
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
 export default function App({ Component, pageProps }: AppProps<{
     session: Session;
 }>) {
+    const DynamicSocialProvider = dynamic(
+        () => import("../contexts/SocialLoginContext").then((res) => res.Web3AuthProvider),
+        {
+          ssr: false,
+        }
+      );
+    
+    const DynamicSmartAccountProvider = dynamic(
+        () => import("../contexts/SmartAccountContext").then((res) => res.SmartAccountProvider),
+        {
+          ssr: false,
+        }
+      );
+
+      const DynamicReviewProvider = dynamic(
+        () => import("../contexts/ReviewContext").then((res) => res.ReviewProvider),
+        {
+          ssr: false,
+        }
+      );
     return (
         // redux state store
+        <Suspense fallback={<div>Loading...</div>}>
+            <DynamicSocialProvider>
+                <DynamicSmartAccountProvider>
+                    <DynamicReviewProvider>
         <Provider store={store}>
             {/* This provides all the necssary config for wallet connections */}
             <WagmiConfig config={wagmiConfig}>
@@ -36,6 +63,10 @@ export default function App({ Component, pageProps }: AppProps<{
                 </SessionProvider>
             </WagmiConfig>
         </Provider>
+        </DynamicReviewProvider>
+        </DynamicSmartAccountProvider>
+        </DynamicSocialProvider>
+        </Suspense>
 
     )
 }
